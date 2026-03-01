@@ -20,11 +20,17 @@
   },
   "homepage": "https://github.com/EnesEfeTokta/WeatherZeroXCLI#readme",
   "devDependencies": {
-    "@types/node": "^25.2.3",
+    "@types/node": "^25.3.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "nodemon": "^3.1.11"
+    "chalk": "^5.6.2",
+    "commander": "^14.0.3",
+    "dotenv": "^17.3.1",
+    "figlet": "^1.10.0",
+    "fs": "^0.0.1-security",
+    "nodemon": "^3.1.11",
+    "ora": "^9.3.0"
   }
 }
