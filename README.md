@@ -24,6 +24,15 @@ This project demonstrates backend-oriented thinking even within a CLI environmen
 
 ---
 
+## Screenshot
+![Screenshot 1](https://github.com/EnesEfeTokta/WeatherZeroXCLI/blob/main/Screenshots/Screenshot_1.png)
+
+![Screenshot 2](https://github.com/EnesEfeTokta/WeatherZeroXCLI/blob/main/Screenshots/Screenshot_2.png)
+
+![Screenshot 3](https://github.com/EnesEfeTokta/WeatherZeroXCLI/blob/main/Screenshots/Screenshot_3.png)
+
+---
+
 ## Features
 
 ### Core Capabilities
