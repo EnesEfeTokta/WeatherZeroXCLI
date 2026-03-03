@@ -1,3 +1,5 @@
+import { handleError } from "../utils/error";
+
 export async function getLocation(cityInput: string) {
     if (cityInput.toLowerCase() === "me") {
         const response = await fetch("http://ip-api.com/json");
@@ -11,11 +13,11 @@ export async function getLocation(cityInput: string) {
     }
 
     const apiKey = process.env.API_KEY;
-    if (!apiKey) throw new Error("API_KEY is not defined in .env file");
+    if (!apiKey) handleError(new Error("API_KEY is not defined in .env file"));
 
     const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${cityInput}&limit=1&appid=${apiKey}`);
     const data = await response.json();
-    if (!data.length) throw new Error(`${cityInput} not found`);
+    if (!data.length) handleError(new Error(`${cityInput} not found`));
 
     return {
         city: data[0].name,

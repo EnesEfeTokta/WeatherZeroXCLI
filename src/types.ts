@@ -5,3 +5,10 @@ export type WeatherData = {
     date: string;
     createdAt: string;
 }
+export type WeatherRecord = {
+    city: string;
+    date: string;
+    temp: number;
+    wind: number;
+    savedAt: string;
+}
