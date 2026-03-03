@@ -1,4 +1,5 @@
 import { WeatherData } from "../types";
+import { handleError } from "../utils/error";
 
 export async function getWeather(city: string, lat: number, lon: number, date: string): Promise<WeatherData> {
     const apiKey = process.env.API_KEY;
@@ -7,7 +8,7 @@ export async function getWeather(city: string, lat: number, lon: number, date: s
     if (date !== "today") throw new Error("Only 'today' date type is supported for now");
 
     const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`);
-    if (!response.ok) throw new Error('Failed to fetch weather data');
+    if (!response.ok) handleError(new Error("Failed to fetch weather data"));
     const data = await response.json();
 
     return {

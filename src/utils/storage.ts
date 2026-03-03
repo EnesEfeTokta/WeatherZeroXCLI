@@ -1,6 +1,10 @@
 import fs from "fs";
 import path from "path";
-import { WeatherData } from "../types";
+import { WeatherData, WeatherRecord } from "../types";
+import chalk from "chalk";
+import figureSet from "figures";
+import { renderTable } from "../ui/tableRenderer";
+import { handleError } from "./error";
 
 const dataDir = path.join(process.cwd(), "data");
 const filePath = path.join(dataDir, "weather.json");
@@ -8,7 +12,7 @@ const filePath = path.join(dataDir, "weather.json");
 export function saveWeather(data: WeatherData) {
     if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
 
-    let existing = [];
+    let existing: WeatherRecord[] = [];
     if (fs.existsSync(filePath)) {
         const content = fs.readFileSync(filePath, "utf-8");
         existing = JSON.parse(content);
@@ -22,29 +26,25 @@ export function saveWeather(data: WeatherData) {
         savedAt: new Date().toISOString()
     });
     fs.writeFileSync(filePath, JSON.stringify(existing, null, 2));
+    console.log(chalk.green(figureSet.tick, "Weather data saved successfully."));
 }
 
 export function listWeather(filters: any) {
 
     if (!fs.existsSync(filePath)) {
-        console.log("No records.");
-        return;
+        handleError(new Error("No records found. Please fetch and save weather data first."));
     }
 
     const records = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-    const filtered = records.filter((r: any) => matchesFilters(r, filters));
+    const filtered = records.filter((r: WeatherRecord) => matchesFilters(r, filters));
 
     if (filtered.length === 0) {
-        console.log("No records match the given filters.");
-        return;
+        handleError(new Error("No records match the given filters."));
     }
-
-    filtered.forEach((r: any, i: number) => {
-        console.log(`#${i + 1}\nCity: ${r.city}\nDate: ${r.date}\nTemp: ${r.temp}\nWind: ${r.wind}\nSavedAt: ${r.savedAt}\n--------\n`);
-    });
+    renderTable(filtered);
 }
 
-export function matchesFilters(record: any, filters: any) {
+export function matchesFilters(record: WeatherRecord, filters: any) {
 
     if (filters.city && record.city !== filters.city) return false;
 
@@ -72,15 +72,14 @@ export function matchesFilters(record: any, filters: any) {
 export function deleteWeather(filters: any) {
 
     if (!fs.existsSync(filePath)) {
-        console.log("No records.");
-        return;
+        handleError(new Error("No records found. Please fetch and save weather data first."));
     }
 
     const records = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-    const remaining = records.filter((r: any) => !matchesFilters(r, filters));
+    const remaining = records.filter((r: WeatherRecord) => !matchesFilters(r, filters));
 
     const deletedCount = records.length - remaining.length;
     fs.writeFileSync(filePath, JSON.stringify(remaining, null, 2));
 
-    console.log(`${deletedCount} record(s) deleted.`);
+    console.log(chalk.green(figureSet.tick, `Deleted ${deletedCount} record(s) matching the filters.`));
 }
