@@ -1,7 +1,5 @@
 import { WeatherData } from "../types";
 
-
-
 export async function getWeather(city: string, lat: number, lon: number, date: string): Promise<WeatherData> {
     const apiKey = process.env.API_KEY;
     if (!apiKey) throw new Error("API_KEY is not defined in .env file");
